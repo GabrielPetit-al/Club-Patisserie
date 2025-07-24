@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Club Pâtisserie - Équipe</title>
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff8f0;
+    color: #333;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+  h1 {
+    color: #d35400;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .membre {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(211, 84, 0, 0.2);
+  padding: 15px;
+  margin-bottom: 20px;
+
+  display: flex;            /* affiche les enfants en ligne */
+  align-items: center;      /* aligne verticalement au centre */
+  gap: 20px;                /* espace entre la photo et le texte */
+}
+
+.photo-membre {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #d35400;
+}
+
+.details-membre {
+  /* pas forcément obligatoire mais utile pour organiser le texte */
+  flex: 1; /* occupe l’espace restant */
+}
+
+  
+  .membre h2 {
+    margin: 0 0 10px 0;
+    color: #a84300;
+  }
+
+  /* Style pour la photo de membre */
+  .photo-membre {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #d35400;
+    margin-bottom: 10px;
+  }
+</style>
+
+</head>
+<body>
+  <div id="nav-placeholder"></div>
+
+  <h1>Notre Équipe</h1>
+
+  <div class="membre">
+    <h2>Gabriel Petit</h2>
+    <p>Chef </p>
+    <img src="mbappe.jpeg" alt="Photo de Gabriel" class="photo-membre" />
+  </div>
+
+  <div class="membre">
+    <h2>Cédrine Frustié</h2>
+    <p>Patissière</p>
+  </div>
+
+  <div class="membre">
+    <h2>Anouk Potier</h2>
+    <p>Patissière</p>
+  </div>
+
+  <div class="membre">
+    <h2>Hippolyte Guilbert</h2>
+    <p>Gouteur</p>
+  </div>
+
+  <div class="membre">
+    <h2>Pierre Simian-Salvay</h2>
+    <p>Gouteur</p>
+  </div>
+
+  <div class="membre">
+    <h2>Nathan Rudelle</h2>
+    <p>Investisseur</p>
+  </div>
+
+  <div class="membre">
+    <h2>Benjamin Crépin</h2>
+    <p>Gouteur</p>
+  </div>
+
+  <div class="membre">
+    <h2>Justin Blouet</h2>
+    <p>Gouteur</p>
+  </div>
+
+  <script>
+    fetch('nav.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('nav-placeholder').innerHTML = data;
+        document.getElementById('link-equipe').classList.add('active');
+      });
+  </script>
+</body>
+</html>

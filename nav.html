@@ -1,0 +1,36 @@
+<nav>
+  <ul class="nav-bar">
+    <li><a href="index.html" id="link-accueil">Accueil</a></li>
+    <li><a href="produits.html" id="link-produits">Produits</a></li>
+    <li><a href="panier.html" id="link-panier">Panier</a></li>
+    <li><a href="equipe.html" id="link-equipe">Équipe</a></li>
+    <li><a href="contact.html" id="link-contact">Contact</a></li>
+  </ul>
+</nav>
+
+<style>
+  .nav-bar {
+    display: flex;
+    justify-content: center;
+    background-color: #d35400;
+    padding: 12px 0;
+    margin: 0;
+    list-style-type: none;
+  }
+  .nav-bar li {
+    margin: 0 25px;
+  }
+  .nav-bar a {
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+  }
+  .nav-bar a:hover {
+    color: #ffb347;
+  }
+  .nav-bar a.active {
+    border-bottom: 3px solid #ffb347;
+  }
+</style>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Club Pâtisserie - Produits</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff8f0;
+      color: #333;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #d35400;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .produit {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(211, 84, 0, 0.2);
+      padding: 15px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .produit img {
+      width: 120px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .details {
+      flex: 1;
+      text-align: left;
+    }
+    .details h2 {
+      margin: 0 0 10px 0;
+      font-size: 1.5rem;
+      color: #a84300;
+    }
+    .details p {
+      margin: 5px 0;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    .actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    input[type="number"] {
+      width: 60px;
+      padding: 6px;
+      font-size: 1rem;
+      border: 2px solid #d35400;
+      border-radius: 6px;
+      text-align: center;
+    }
+    button {
+      background-color: #d35400;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #ffb347;
+      color: #a84300;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation chargée dynamiquement -->
+  <div id="nav-placeholder"></div>
+
+  <h1>Nos Délicieuses Pâtisseries</h1>
+  <div id="produits-list"></div>
+
+  <script>
+    // Charger la barre de navigation
+    fetch('nav.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('nav-placeholder').innerHTML = data;
+        const linkProduits = document.getElementById('link-produits');
+        if (linkProduits) linkProduits.classList.add('active');
+      });
+
+    // Liste des produits
+    const produits = [
+      {
+        id: 'fondant_chocolat',
+        nom: 'Fondant au chocolat',
+        prix: 3,
+        image: 'fondant.jpeg'
+      },
+      {
+        id: 'Cookie',
+        nom: 'Cookie',
+        prix: 1.5,
+        image: 'cookie.jpeg'
+      },
+      {
+        id: 'crepe',
+        nom: 'Crêpe sucrée',
+        prix: 1,
+        image: 'crepe.jpeg'
+      },
+      {
+        id: 'tarte_citron',
+        nom: 'Tarte au citron',
+        prix: 3,
+        image: 'tartecitron.jpeg'
+      }
+    ];
+
+    const produitsList = document.getElementById('produits-list');
+
+    // Affichage des produits
+    function renderProduits() {
+      produitsList.innerHTML = '';
+      produits.forEach(produit => {
+        const produitDiv = document.createElement('div');
+        produitDiv.classList.add('produit');
+        produitDiv.innerHTML = `
+          <img src="${produit.image}" alt="${produit.nom}" />
+          <div class="details">
+            <h2>${produit.nom}</h2>
+            <p>${produit.prix.toFixed(2)} €</p>
+          </div>
+          <div class="actions">
+            <input type="number" min="1" value="1" id="qty-${produit.id}" />
+            <button data-id="${produit.id}">Ajouter au panier</button>
+          </div>
+        `;
+        produitsList.appendChild(produitDiv);
+      });
+
+      // Ajout des événements sur chaque bouton
+      produitsList.querySelectorAll('button').forEach(button => {
+        button.addEventListener('click', (e) => {
+          const id = e.target.getAttribute('data-id');
+          const qtyInput = document.getElementById('qty-' + id);
+          const quantity = parseInt(qtyInput.value, 10);
+          if (!quantity || quantity < 1) {
+            alert('Veuillez saisir une quantité valide.');
+            return;
+          }
+          addToCart(id, quantity);
+        });
+      });
+    }
+
+    // Ajout au panier (localStorage)
+    function addToCart(productId, quantity) {
+      let cart = JSON.parse(localStorage.getItem('panier')) || [];
+      const produit = produits.find(p => p.id === productId);
+      if (!produit) {
+        alert('Produit introuvable.');
+        return;
+      }
+
+      const index = cart.findIndex(item => item.id === productId);
+      if (index !== -1) {
+        cart[index].quantity += quantity;
+      } else {
+        cart.push({ id: produit.id, nom: produit.nom, prix: produit.prix, quantity: quantity });
+      }
+
+      localStorage.setItem('panier', JSON.stringify(cart));
+      alert(`${quantity} x ${produit.nom} ajouté(s) au panier !`);
+    }
+
+    // Lancement affichage
+    renderProduits();
+  </script>
+</body>
+</html>

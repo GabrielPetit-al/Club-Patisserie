@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Club Pâtisserie - Panier</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff8f0;
+      color: #333;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #d35400;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #d35400;
+      color: white;
+    }
+    .total {
+      text-align: right;
+      font-weight: bold;
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+    .actions-bas {
+      margin-top: 20px;
+      text-align: right;
+    }
+    button {
+      background-color: #d35400;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-left: 10px;
+    }
+    button:hover {
+      background-color: #ffb347;
+      color: #a84300;
+    }
+  </style>
+</head>
+<body>
+  <div id="nav-placeholder"></div>
+
+  <h1>Votre Panier</h1>
+
+  <table id="panier-table">
+    <thead>
+      <tr>
+        <th>Produit</th>
+        <th>Prix Unitaire</th>
+        <th>Quantité</th>
+        <th>Sous-total</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div class="total" id="total-prix"></div>
+
+  <div class="actions-bas">
+    <button id="payer-btn">Payer le panier</button>
+  </div>
+
+  <script>
+    // Charger la nav
+    fetch('nav.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('nav-placeholder').innerHTML = data;
+        document.getElementById('link-panier').classList.add('active');
+      });
+
+    function renderPanier() {
+      const panier = JSON.parse(localStorage.getItem('panier')) || [];
+      const tbody = document.querySelector('#panier-table tbody');
+      tbody.innerHTML = '';
+      let total = 0;
+
+      panier.forEach((item, index) => {
+        const sousTotal = item.prix * item.quantity;
+        total += sousTotal;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.nom}</td>
+          <td>${item.prix.toFixed(2)} €</td>
+          <td>${item.quantity}</td>
+          <td>${sousTotal.toFixed(2)} €</td>
+          <td><button class="supprimer-btn" data-index="${index}">Supprimer</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('total-prix').textContent = `Total : ${total.toFixed(2)} €`;
+
+      // Boutons supprimer
+      tbody.querySelectorAll('.supprimer-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+          const index = parseInt(e.target.getAttribute('data-index'));
+          supprimerProduit(index);
+        });
+      });
+    }
+
+    function supprimerProduit(index) {
+      let panier = JSON.parse(localStorage.getItem('panier')) || [];
+      panier.splice(index, 1);
+      localStorage.setItem('panier', JSON.stringify(panier));
+      renderPanier();
+    }
+
+    // Gestion du bouton payer
+    document.getElementById('payer-btn').addEventListener('click', () => {
+      const panier = JSON.parse(localStorage.getItem('panier')) || [];
+      if (panier.length === 0) {
+        alert("Votre panier est vide !");
+        return;
+      }
+      // Ici tu peux brancher un vrai service de paiement ou rediriger :
+      alert("Merci pour votre commande ! (intégrer ici un vrai paiement)");
+      // Par exemple redirection vers une page paiement :
+      // window.location.href = "paiement.html";
+    });
+
+    renderPanier();
+  </script>
+</body>
+</html>
